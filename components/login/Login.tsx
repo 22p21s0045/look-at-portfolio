@@ -1,7 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import { supabase } from "../login/supabaseClient";
-import { Stack, Grid,Button } from "@mui/material";
+import { Stack, Grid, Button, Box } from "@mui/material";
+import { FcGoogle } from "react-icons/fc";
+import {GoogleLoginButton,GithubLoginButton} from "react-social-login-buttons";
+import Image from "next/image";
+
 function Login() {
   async function signInWithGithub() {
     const { user, session, error } = await supabase.auth.signIn({
@@ -14,16 +18,17 @@ function Login() {
         container
         justifyContent="center"
         alignItems="center"
-        sx={{ backgroundColor: "black", width: "100%", height: "100%" }}
+        sx={{ backgroundColor: "white", height: "100vh" }}
       >
-        <Grid item xs={12} lg={4} sx={{ backgroundColor: "pink" }}>
-          <Stack spacing={2} direction="column">
+
+        <Grid item xs={12} md={6} lg={4} sx={{ backgroundColor: "pink",borderRadius:5,borderStyle:"solid" }}>
+          <Stack spacing={2} direction="column"  alignItems="center">
             <h1>Log in</h1>
-            <Button onClick={signInWithGithub}>
-              
-              Sign in with Google
-              </Button>
-            <Button onClick={signInWithGithub}>Sign in with Github</Button>
+            <GoogleLoginButton onClick={() => alert("Hello")} style={{width:"45%",fontFamily:"Courier Prime",fontweight:"bolder"}}/>
+            <GithubLoginButton onClick={() => alert("Hello")} style={{width:"45%",marginTop:15,fontFamily:"Courier Prime"}}/>
+            <Box sx={{paddingTop:5}}>
+            <Image src="/svg/icon/icon-lock.svg" width={50} height={50} />
+            </Box>
           </Stack>
         </Grid>
       </Grid>
