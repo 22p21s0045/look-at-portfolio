@@ -16,7 +16,7 @@ function Login() {
     });
   }
   return (
-    <div>
+    <div >
       <Box sx={{position:"fix",height:"10vh"}}>
       <img src="/svg/icon/upwave.svg"/>
 
@@ -25,7 +25,7 @@ function Login() {
         container
         justifyContent="center"
         alignItems="center"
-        sx={{ backgroundColor: "white", height: "100vh" }}
+        sx={{ backgroundColor: "#FAF0D7", height: "100vh" }}
       >
         
         <Grid
