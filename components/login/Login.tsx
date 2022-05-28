@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { supabase } from "../login/supabaseClient";
 import { Stack, Grid, Button, Box } from "@mui/material";
-import { FcGoogle } from "react-icons/fc";
+
 import {
   GoogleLoginButton,
   GithubLoginButton,
@@ -17,12 +17,17 @@ function Login() {
   }
   return (
     <div>
+      <Box sx={{position:"fix",height:"10vh"}}>
+      <img src="/svg/icon/upwave.svg"/>
+
+      </Box>
       <Grid
         container
         justifyContent="center"
         alignItems="center"
         sx={{ backgroundColor: "white", height: "100vh" }}
       >
+        
         <Grid
           item
           xs={12}
@@ -65,6 +70,7 @@ function Login() {
 
         
       </Grid>
+     
     </div>
   );
 }
