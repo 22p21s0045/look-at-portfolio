@@ -2,7 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { supabase } from "../login/supabaseClient";
 import { Stack, Grid, Button, Box } from "@mui/material";
-
+import Lottie from "lottie-react";
+import Cat from "../../public/lottie/cat.json";
 import {
   GoogleLoginButton,
   GithubLoginButton,
@@ -10,16 +11,20 @@ import {
 import Image from "next/image";
 
 function Login() {
+  async function signInWithGoogle() {
+    const { user, session, error } = await supabase.auth.signIn({
+      provider: 'google',
+    })
+  }
   async function signInWithGithub() {
     const { user, session, error } = await supabase.auth.signIn({
       provider: "github",
     });
   }
   return (
-    <div >
-      <Box sx={{position:"fix",height:"10vh"}}>
-      <img src="/svg/icon/upwave.svg"/>
-
+    <div>
+      <Box sx={{ position: "fix", height: "10vh" }}>
+        <img src="/svg/icon/upwave.svg" />
       </Box>
       <Grid
         container
@@ -27,7 +32,6 @@ function Login() {
         alignItems="center"
         sx={{ backgroundColor: "#FAF0D7", height: "100vh" }}
       >
-        
         <Grid
           item
           xs={12}
@@ -39,10 +43,14 @@ function Login() {
             borderStyle: "solid",
           }}
         >
-          <Stack spacing={2} direction="column" alignItems="center">
+          <Stack spacing={0} direction="column" alignItems="center">
             <h1>Log in</h1>
+            <Box sx={{marginTop:-5}}>
+            <Lottie animationData={Cat} loop={true} style={{width:350,height:170,marginTop:0,paddingTop:0}}/>
+            </Box>
+            
             <GoogleLoginButton
-              onClick={() => alert("Hello")}
+              onClick={signInWithGoogle}
               style={{
                 width: "45%",
                 fontFamily: "Courier Prime",
@@ -50,7 +58,7 @@ function Login() {
               }}
             />
             <GithubLoginButton
-              onClick={() => alert("Hello")}
+              onClick={signInWithGithub}
               style={{
                 width: "45%",
                 marginTop: 15,
@@ -61,16 +69,14 @@ function Login() {
               <Image src="/svg/icon/icon-lock.svg" width={50} height={50} />
             </Box>
           </Stack>
-          <div style={{paddingBottom:0,position:"relative"}}>
-          <img src="/svg/icon/wave2.svg" style={{objectFit:"cover",paddingBottom:0,marginBottom:-6}} />
-
+          <div style={{ paddingBottom: 0, position: "relative" }}>
+            <img
+              src="/svg/icon/wave2.svg"
+              style={{ objectFit: "cover", paddingBottom: 0, marginBottom: -6 }}
+            />
           </div>
-          
         </Grid>
-
-        
       </Grid>
-     
     </div>
   );
 }
