@@ -5,6 +5,7 @@ import Login from '../components/login/Login'
 
 
 const Home: NextPage = () => {
+  
   return (
     <div>
       <Login/>

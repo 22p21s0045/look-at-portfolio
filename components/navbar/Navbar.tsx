@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import {
   AppBar,
   Button,
@@ -15,10 +16,24 @@ import {
   DialogContentText,
   FormControl,
   Select,
+  MenuItem,
 } from "@mui/material";
 import Image from "next/image";
 import { FiMenu } from "react-icons/fi";
+import useSWR from 'swr'
+
 function Navbar() {
+  const fetcher = () => fetch("https://jsonplaceholder.typicode.com").then((r) => r.json());
+  const { data, error } = useSWR("/todos/1", fetcher);
+  if(!data){
+    return <div>Loading...</div>
+  }
+  if (error) return <div>failed to load</div>
+  useEffect(() => {
+    console.log(data)
+  }, [data])
+ 
+  
   return (
     <div>
       <AppBar
@@ -44,6 +59,7 @@ function Navbar() {
                 sx={{ fontFamily: "Courier Prime", fontWeight: "bold" }}
               >
                 add new
+                {data}
               </Typography>
             </Box>
           </Button>
@@ -65,7 +81,16 @@ function Navbar() {
         <DialogTitle id="alert-dialog-title">{"Add new history"}</DialogTitle>
         <DialogContent>
           <FormControl>
-            <Select label="coin"></Select>
+            {/* <Select label="coin">
+              {data.map((item) => {
+                return (
+                  <MenuItem value={item.symbol}>{item.symbol}</MenuItem>
+                );
+              }
+              )}
+
+
+            </Select> */}
           </FormControl>
         </DialogContent>
         <DialogActions>
