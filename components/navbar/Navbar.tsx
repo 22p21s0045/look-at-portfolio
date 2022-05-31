@@ -17,23 +17,36 @@ import {
   FormControl,
   Select,
   MenuItem,
+  InputLabel,
+  TextField,
+  Stack,
 } from "@mui/material";
 import Image from "next/image";
 import { FiMenu } from "react-icons/fi";
-import useSWR from 'swr'
+import useSWR from "swr";
 
-function Navbar() {
-  const fetcher = () => fetch("https://jsonplaceholder.typicode.com").then((r) => r.json());
-  const { data, error } = useSWR("/todos/1", fetcher);
-  if(!data){
-    return <div>Loading...</div>
-  }
-  if (error) return <div>failed to load</div>
-  useEffect(() => {
-    console.log(data)
-  }, [data])
- 
+interface cointype {
+  id: number;
+  info: string;
+  symbol: string;
+}
+interface Props {
+  error: number;
+  result: Array<cointype>;
+}
+function Navbar({ coin }: any) {
+  const [open, setOpen] = useState(false);
+  const [coin_pair, setCoinPair] = useState(coin);
+  const [save, setSave] = useState({
+    symbol: "",
+    amount: "",
+    price: "",
+  });
+  const handleOpen = () => {
+    setOpen(!open);
+  };
   
+
   return (
     <div>
       <AppBar
@@ -43,6 +56,7 @@ function Navbar() {
         <Toolbar sx={{ marginTop: 1 }}>
           <Button
             className="Button-add"
+            onClick={handleOpen}
             sx={{
               backgroundColor: "#F4BBBB",
               fontfamily: "Courier Prime",
@@ -59,7 +73,6 @@ function Navbar() {
                 sx={{ fontFamily: "Courier Prime", fontWeight: "bold" }}
               >
                 add new
-                {data}
               </Typography>
             </Box>
           </Button>
@@ -73,7 +86,7 @@ function Navbar() {
         </Toolbar>
       </AppBar>
       <Dialog
-        open={false}
+        open={open}
         onClose={() => {}}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -81,24 +94,24 @@ function Navbar() {
         <DialogTitle id="alert-dialog-title">{"Add new history"}</DialogTitle>
         <DialogContent>
           <FormControl>
-            {/* <Select label="coin">
-              {data.map((item) => {
-                return (
-                  <MenuItem value={item.symbol}>{item.symbol}</MenuItem>
-                );
-              }
-              )}
-
-
-            </Select> */}
+            <InputLabel>Coin pair</InputLabel>
+            <Stack direction="row" spacing={3}>
+              <Select sx={{ position: "relative", width: 200 }}>
+                {coin_pair.result.map((item: cointype) => {
+                  return <MenuItem value={item.symbol}>{item.symbol}</MenuItem>;
+                })}
+              </Select>
+              <TextField label ="Buy"/>
+            </Stack>
+            <TextField label ="Amount" sx={{position:"relative",width:"45%",marginTop:5}}/>
           </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => {}} color="primary">
-            Disagree
+            close
           </Button>
           <Button onClick={() => {}} color="primary" autoFocus>
-            Agree
+            Save
           </Button>
         </DialogActions>
       </Dialog>
@@ -107,3 +120,4 @@ function Navbar() {
 }
 
 export default Navbar;
+export type { cointype, Props };
