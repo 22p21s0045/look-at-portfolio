@@ -45,7 +45,6 @@ function Navbar({ coin }: any) {
   const handleOpen = () => {
     setOpen(!open);
   };
-  
 
   return (
     <div>
@@ -94,16 +93,30 @@ function Navbar({ coin }: any) {
         <DialogTitle id="alert-dialog-title">{"Add new history"}</DialogTitle>
         <DialogContent>
           <FormControl>
-            <InputLabel>Coin pair</InputLabel>
-            <Stack direction="row" spacing={3}>
+            <InputLabel sx={{paddingTop:2}}>Coin pair</InputLabel>
+            <Stack direction="row" spacing={3} sx={{paddingTop:2}}>
               <Select sx={{ position: "relative", width: 200 }}>
                 {coin_pair.result.map((item: cointype) => {
                   return <MenuItem value={item.symbol}>{item.symbol}</MenuItem>;
                 })}
               </Select>
-              <TextField label ="Buy"/>
+              <TextField label="Buy" />
             </Stack>
-            <TextField label ="Amount" sx={{position:"relative",width:"45%",marginTop:5}}/>
+            <Stack direction="row" spacing={3}>
+              <TextField
+                label="Amount"
+                sx={{ position: "relative", width: "45%", marginTop: 5 }}
+              />
+
+              <Select
+                sx={{
+                  position: "relative",
+                  width: "50%",
+                  height: "50%",
+                  marginTop: 5,
+                }}
+              ></Select>
+            </Stack>
           </FormControl>
         </DialogContent>
         <DialogActions>

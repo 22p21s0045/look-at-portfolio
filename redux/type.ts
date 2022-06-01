@@ -4,7 +4,12 @@ interface Savetype {
   amount: number;
 }
 interface State {
-    Save:Array<Savetype>;
-    History
+    Save:{
+        coin_pair: string;
+        buy: number;
+        amount: number;
+    }
+    History:Array<Savetype>;
+    
 }
-export type { Savetype };
+export type { Savetype ,State};
