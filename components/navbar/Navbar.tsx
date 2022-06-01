@@ -16,6 +16,7 @@ import {
   DialogContentText,
   FormControl,
   Select,
+  Menu,
   MenuItem,
   InputLabel,
   TextField,
@@ -35,6 +36,7 @@ interface Props {
   result: Array<cointype>;
 }
 function Navbar({ coin }: any) {
+  const [setting, setSetting] = useState(false);
   const [open, setOpen] = useState(false);
   const [coin_pair, setCoinPair] = useState(coin);
   const [save, setSave] = useState({
@@ -44,6 +46,9 @@ function Navbar({ coin }: any) {
   });
   const handleOpen = () => {
     setOpen(!open);
+  };
+  const handleSetting = () => {
+    setSetting(!setting);
   };
 
   return (
@@ -76,12 +81,24 @@ function Navbar({ coin }: any) {
             </Box>
           </Button>
           <Tooltip title="Account setting">
-            <IconButton sx={{ position: "absolute", right: "20%" }}>
+            <IconButton
+              sx={{ position: "absolute", right: "20%" }}
+              onClick={handleSetting}
+            >
               <Avatar />
-
+              <Menu
+                open={setting}
+                onClose={handleSetting}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                anchorPosition={{ top: 200, left: 400 }}
+              >
+                
+                <MenuItem>
+                  <Typography>Logout</Typography>
+                </MenuItem>
+              </Menu>
             </IconButton>
           </Tooltip>
-          
 
           <IconButton sx={{ position: "absolute", right: "5%" }}>
             <FiMenu color="white" size={40} />
