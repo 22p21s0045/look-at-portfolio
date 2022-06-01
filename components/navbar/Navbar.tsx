@@ -93,31 +93,36 @@ function Navbar({ coin }: any) {
         <DialogTitle id="alert-dialog-title">{"Add new history"}</DialogTitle>
         <DialogContent>
           <FormControl>
-            <InputLabel sx={{paddingTop:2}}>Coin pair</InputLabel>
-            <Stack direction="row" spacing={3} sx={{paddingTop:2}}>
+            <InputLabel sx={{ paddingTop: 2 }}>Coin pair</InputLabel>
+            <Stack direction="row" spacing={3} sx={{ paddingTop: 2 }}>
               <Select sx={{ position: "relative", width: 200 }}>
                 {coin_pair.result.map((item: cointype) => {
-                  return <MenuItem value={item.symbol}>{item.symbol}</MenuItem>;
+                  return <MenuItem value={item.symbol} key={item.id}>{item.symbol}</MenuItem>;
                 })}
               </Select>
               <TextField label="Buy" />
             </Stack>
+            </FormControl>
+            <FormControl>
             <Stack direction="row" spacing={3}>
               <TextField
                 label="Amount"
                 sx={{ position: "relative", width: "45%", marginTop: 5 }}
               />
+              
 
               <Select
+              label="Group"
                 sx={{
                   position: "relative",
                   width: "50%",
                   height: "50%",
-                  marginTop: 5,
+                  marginTop: 10,
                 }}
               ></Select>
             </Stack>
-          </FormControl>
+            </FormControl>
+         
         </DialogContent>
         <DialogActions>
           <Button onClick={() => {}} color="primary">
@@ -128,6 +133,7 @@ function Navbar({ coin }: any) {
           </Button>
         </DialogActions>
       </Dialog>
+
     </div>
   );
 }
