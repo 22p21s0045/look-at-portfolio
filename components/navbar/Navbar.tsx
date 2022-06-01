@@ -94,35 +94,42 @@ function Navbar({ coin }: any) {
         <DialogContent>
           <FormControl>
             <InputLabel sx={{ paddingTop: 2 }}>Coin pair</InputLabel>
-            <Stack direction="row" spacing={3} sx={{ paddingTop: 2 }}>
+            <Stack
+              direction="row"
+              spacing={3}
+              sx={{ paddingTop: 2 }}
+              alignItems="center"
+            >
               <Select sx={{ position: "relative", width: 200 }}>
                 {coin_pair.result.map((item: cointype) => {
-                  return <MenuItem value={item.symbol} key={item.id}>{item.symbol}</MenuItem>;
+                  return (
+                    <MenuItem value={item.symbol} key={item.id}>
+                      {item.symbol}
+                    </MenuItem>
+                  );
                 })}
               </Select>
               <TextField label="Buy" />
             </Stack>
-            </FormControl>
-            <FormControl>
-            <Stack direction="row" spacing={3}>
+          </FormControl>
+          <FormControl>
+            <Stack direction="column" spacing={3}>
               <TextField
                 label="Amount"
-                sx={{ position: "relative", width: "45%", marginTop: 5 }}
+                sx={{ position: "relative", width: "90%", marginTop: 5 }}
               />
-              
+              <InputLabel sx={{paddingTop:12}}>Group</InputLabel>
 
               <Select
-              label="Group"
+                label="Group"
                 sx={{
                   position: "relative",
                   width: "50%",
                   height: "50%",
-                  marginTop: 10,
                 }}
               ></Select>
             </Stack>
-            </FormControl>
-         
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => {}} color="primary">
@@ -133,7 +140,6 @@ function Navbar({ coin }: any) {
           </Button>
         </DialogActions>
       </Dialog>
-
     </div>
   );
 }
