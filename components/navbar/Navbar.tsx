@@ -76,8 +76,12 @@ function Navbar({ coin }: any) {
             </Box>
           </Button>
           <Tooltip title="Account setting">
-            <Avatar sx={{ position: "absolute", right: "20%" }} />
+            <IconButton sx={{ position: "absolute", right: "20%" }}>
+              <Avatar />
+
+            </IconButton>
           </Tooltip>
+          
 
           <IconButton sx={{ position: "absolute", right: "5%" }}>
             <FiMenu color="white" size={40} />
@@ -86,7 +90,7 @@ function Navbar({ coin }: any) {
       </AppBar>
       <Dialog
         open={open}
-        onClose={() => {}}
+        onClose={handleOpen}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -118,7 +122,7 @@ function Navbar({ coin }: any) {
                 label="Amount"
                 sx={{ position: "relative", width: "90%", marginTop: 5 }}
               />
-              <InputLabel sx={{paddingTop:12}}>Group</InputLabel>
+              <InputLabel sx={{ paddingTop: 12 }}>Group</InputLabel>
 
               <Select
                 label="Group"
@@ -132,7 +136,7 @@ function Navbar({ coin }: any) {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => {}} color="primary">
+          <Button onClick={handleOpen} color="primary">
             close
           </Button>
           <Button onClick={() => {}} color="primary" autoFocus>
