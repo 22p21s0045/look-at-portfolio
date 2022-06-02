@@ -26,7 +26,12 @@ import Image from "next/image";
 import { FiMenu } from "react-icons/fi";
 import useSWR from "swr";
 import { useSelector, useDispatch } from "react-redux";
-import { update_coin_pair, update_buy, update_group } from "../../redux/slide";
+import {
+  update_coin_pair,
+  update_buy,
+  update_group,
+  update_amount,
+} from "../../redux/slide";
 import { RootState, AppDispatch } from "../../redux/store";
 interface cointype {
   id: number;
@@ -41,7 +46,9 @@ function Navbar({ coin }: any) {
   const [setting, setSetting] = useState(false);
   const [open, setOpen] = useState(false);
   const [coin_pair, setCoinPair] = useState(coin);
-  const amount = useSelector((state: RootState) => state.save.coin_pair);
+  const [last_price, setLastPrice] = useState(0);
+  const amount = useSelector((state: RootState) => state.save.amount);
+  const buy = useSelector((state: RootState) => state.save.buy);
 
   const handleOpen = () => {
     setOpen(!open);
@@ -49,15 +56,28 @@ function Navbar({ coin }: any) {
   const handleSetting = () => {
     setSetting(!setting);
   };
-  const handle_change_coinpair = (event:any)=>{
+  const handle_change_coinpair = (event: any) => {
     dispatch(update_coin_pair(event.target.value));
-
-  }
-  const handle_change_buy = (event:any)=>{
+  };
+  const handle_change_buy = (event: any) => {
     dispatch(update_buy(event.target.value));
-  }
+  };
+  const coin_state = useSelector((state: RootState) => state.save.coin_pair);
+  const fetch_price = () => {
+    fetch(`https://api.bitkub.com/api/market/ticker?sym=${coin_state}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setLastPrice(data[`${coin_state}`].last);
+      });
+  };
   const save_state = useSelector<RootState>((state) => state.save.coin_pair);
   const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    fetch_price();
+    const price = last_price;
+    const buys = buy;
+    dispatch(update_amount(buys / price));
+  }, [coin_state, last_price, buy]);
 
   return (
     <div>
@@ -128,7 +148,10 @@ function Navbar({ coin }: any) {
               sx={{ paddingTop: 2 }}
               alignItems="center"
             >
-              <Select sx={{ position: "relative", width: 200 }} onChange={handle_change_coinpair}>
+              <Select
+                sx={{ position: "relative", width: 200 }}
+                onChange={handle_change_coinpair}
+              >
                 {coin_pair.result.map((item: cointype) => {
                   return (
                     <MenuItem value={item.symbol} key={item.id}>
@@ -137,7 +160,7 @@ function Navbar({ coin }: any) {
                   );
                 })}
               </Select>
-              <TextField label="Buy" onChange={handle_change_buy}/>
+              <TextField label="Buy" onChange={handle_change_buy} />
             </Stack>
           </FormControl>
           <FormControl>
@@ -146,8 +169,6 @@ function Navbar({ coin }: any) {
                 label="Amount"
                 sx={{ position: "relative", width: "90%", marginTop: 5 }}
                 value={amount}
-                
-               
               />
               <InputLabel sx={{ paddingTop: 12 }}>Group</InputLabel>
 
