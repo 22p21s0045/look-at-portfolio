@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 import {
   AppBar,
   Button,
@@ -46,7 +46,7 @@ interface Props {
 }
 function Navbar({ coin }: any) {
   const [setting, setSetting] = useState(false);
-  const [anchorEl,setanchorEl] = useState(null)
+  const [anchorEl, setanchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   const [coin_pair, setCoinPair] = useState(coin);
   const [last_price, setLastPrice] = useState(0);
@@ -65,6 +65,16 @@ function Navbar({ coin }: any) {
   const handle_change_buy = (event: any) => {
     dispatch(update_buy(event.target.value));
   };
+  const handle_el = (event: any) => {
+    setanchorEl(event.currentTarget);
+  };
+  const handle_close = () => {
+    setanchorEl(null);
+  };
+  useEffect(() => {
+    console.log(anchorEl)
+  }, [anchorEl]);
+  const el = Boolean(anchorEl);
   const coin_state = useSelector((state: RootState) => state.save.coin_pair);
   const fetch_price = () => {
     fetch(`https://api.bitkub.com/api/market/ticker?sym=${coin_state}`)
@@ -111,28 +121,32 @@ function Navbar({ coin }: any) {
               </Typography>
             </Box>
           </Button>
-          <Tooltip title="Account setting">
+         
             <IconButton
               sx={{ position: "absolute", right: "20%" }}
-              onClick={handleSetting}
+              
+              onMouseOver={handle_el}
+              
             >
               <Avatar />
               <Menu
-                open={setting}
-                onClose={handleSetting}
+                open={el}
+                onClose={handle_close}
+                anchorEl={anchorEl}
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                anchorPosition={{ top: 200, left: 400 }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
               >
                 <MenuItem>
                   <Typography>Logout</Typography>
                 </MenuItem>
               </Menu>
             </IconButton>
-          </Tooltip>
-
-          
-            <Drawers />
          
+
+          <Drawers />
         </Toolbar>
       </AppBar>
       <Dialog
