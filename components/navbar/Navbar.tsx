@@ -24,6 +24,7 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import { FiMenu } from "react-icons/fi";
+import { AiFillCloseCircle } from "react-icons/ai";
 import useSWR from "swr";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -138,7 +139,18 @@ function Navbar({ coin }: any) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Add new history"}</DialogTitle>
+        <Box sx={{backgroundColor:"#E3F2FB",borderStyle:"solid"}}>
+        <DialogTitle id="alert-dialog-title">
+          <Typography sx={{ fontSize: "2rem", fontFamily: "Courier Prime",fontWeight: "bold",textAlign: "center"}}>
+            Add new history
+          </Typography>
+
+          <Box sx={{ position: "relative", marginLeft: "90%" }}>
+            <IconButton onClick={handleOpen}>
+              <AiFillCloseCircle size={50} color="#FF5D5D" />
+            </IconButton>
+          </Box>
+        </DialogTitle>
         <DialogContent>
           <FormControl>
             <InputLabel sx={{ paddingTop: 2 }}>Coin pair</InputLabel>
@@ -191,6 +203,7 @@ function Navbar({ coin }: any) {
             Save
           </Button>
         </DialogActions>
+        </Box>
       </Dialog>
     </div>
   );
