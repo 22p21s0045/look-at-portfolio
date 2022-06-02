@@ -25,7 +25,9 @@ import {
 import Image from "next/image";
 import { FiMenu } from "react-icons/fi";
 import useSWR from "swr";
-
+import { useSelector, useDispatch } from "react-redux";
+import { update_coin_pair, update_buy, update_group } from "../../redux/slide";
+import { RootState, AppDispatch } from "../../redux/store";
 interface cointype {
   id: number;
   info: string;
@@ -39,17 +41,15 @@ function Navbar({ coin }: any) {
   const [setting, setSetting] = useState(false);
   const [open, setOpen] = useState(false);
   const [coin_pair, setCoinPair] = useState(coin);
-  const [save, setSave] = useState({
-    symbol: "",
-    amount: "",
-    price: "",
-  });
+
   const handleOpen = () => {
     setOpen(!open);
   };
   const handleSetting = () => {
     setSetting(!setting);
   };
+  const save_state = useSelector<RootState>((state) => state.save.coin_pair);
+  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <div>
@@ -92,7 +92,6 @@ function Navbar({ coin }: any) {
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                 anchorPosition={{ top: 200, left: 400 }}
               >
-                
                 <MenuItem>
                   <Typography>Logout</Typography>
                 </MenuItem>

@@ -1,20 +1,29 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { group } from 'console';
 import type { Savetype } from './type';
 const initialState:Savetype = {
-    coin_pair:'',
+    coin_pair:null,
     buy:0,
-    amount:0
+    amount:0,
+    group:null
 } 
 export const saveSlice = createSlice({
     name: 'save',
     initialState,
     reducers:{
-        save(state,action){
-            return action.payload;
+        update_coin_pair:(state,action:PayloadAction<string>)=>{
+            state.coin_pair = action.payload;
+        },
+        update_buy: (state,action:PayloadAction<number>) => {
+            return {...state,buy:action.payload}
+        },
+        update_group: (state,action:PayloadAction<string>) => {
+            return {...state,group:action.payload}
         }
     }
+
 })
 
-
+export const {update_coin_pair,update_buy, update_group} = saveSlice.actions;
 export default saveSlice.reducer;
   
