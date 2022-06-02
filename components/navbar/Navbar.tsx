@@ -41,6 +41,7 @@ function Navbar({ coin }: any) {
   const [setting, setSetting] = useState(false);
   const [open, setOpen] = useState(false);
   const [coin_pair, setCoinPair] = useState(coin);
+  const amount = useSelector((state: RootState) => state.save.coin_pair);
 
   const handleOpen = () => {
     setOpen(!open);
@@ -48,6 +49,10 @@ function Navbar({ coin }: any) {
   const handleSetting = () => {
     setSetting(!setting);
   };
+  const handle_change_coinpair = (event:any)=>{
+    dispatch(update_coin_pair(event.target.value));
+
+  }
   const save_state = useSelector<RootState>((state) => state.save.coin_pair);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -120,7 +125,7 @@ function Navbar({ coin }: any) {
               sx={{ paddingTop: 2 }}
               alignItems="center"
             >
-              <Select sx={{ position: "relative", width: 200 }}>
+              <Select sx={{ position: "relative", width: 200 }} onChange={handle_change_coinpair}>
                 {coin_pair.result.map((item: cointype) => {
                   return (
                     <MenuItem value={item.symbol} key={item.id}>
@@ -137,6 +142,9 @@ function Navbar({ coin }: any) {
               <TextField
                 label="Amount"
                 sx={{ position: "relative", width: "90%", marginTop: 5 }}
+                value={amount}
+                
+               
               />
               <InputLabel sx={{ paddingTop: 12 }}>Group</InputLabel>
 

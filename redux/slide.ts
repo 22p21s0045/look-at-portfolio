@@ -12,7 +12,8 @@ export const saveSlice = createSlice({
     initialState,
     reducers:{
         update_coin_pair:(state,action:PayloadAction<string>)=>{
-            state.coin_pair = action.payload;
+         return {...state,coin_pair:action.payload}
+         
         },
         update_buy: (state,action:PayloadAction<number>) => {
             return {...state,buy:action.payload}
