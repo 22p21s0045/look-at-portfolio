@@ -53,6 +53,9 @@ function Navbar({ coin }: any) {
     dispatch(update_coin_pair(event.target.value));
 
   }
+  const handle_change_buy = (event:any)=>{
+    dispatch(update_buy(event.target.value));
+  }
   const save_state = useSelector<RootState>((state) => state.save.coin_pair);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -134,7 +137,7 @@ function Navbar({ coin }: any) {
                   );
                 })}
               </Select>
-              <TextField label="Buy" />
+              <TextField label="Buy" onChange={handle_change_buy}/>
             </Stack>
           </FormControl>
           <FormControl>
