@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 import {
   AppBar,
   Button,
@@ -34,6 +34,7 @@ import {
   update_amount,
 } from "../../redux/slide";
 import { RootState, AppDispatch } from "../../redux/store";
+import Drawers from "./Drawers";
 interface cointype {
   id: number;
   info: string;
@@ -45,6 +46,7 @@ interface Props {
 }
 function Navbar({ coin }: any) {
   const [setting, setSetting] = useState(false);
+  const [anchorEl, setanchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   const [coin_pair, setCoinPair] = useState(coin);
   const [last_price, setLastPrice] = useState(0);
@@ -63,6 +65,16 @@ function Navbar({ coin }: any) {
   const handle_change_buy = (event: any) => {
     dispatch(update_buy(event.target.value));
   };
+  const handle_el = (event: any) => {
+    setanchorEl(event.currentTarget);
+  };
+  const handle_close = () => {
+    setanchorEl(null);
+  };
+  useEffect(() => {
+    console.log(anchorEl)
+  }, [anchorEl]);
+  const el = Boolean(anchorEl);
   const coin_state = useSelector((state: RootState) => state.save.coin_pair);
   const fetch_price = () => {
     fetch(`https://api.bitkub.com/api/market/ticker?sym=${coin_state}`)
@@ -109,28 +121,32 @@ function Navbar({ coin }: any) {
               </Typography>
             </Box>
           </Button>
-          <Tooltip title="Account setting">
+         
             <IconButton
               sx={{ position: "absolute", right: "20%" }}
-              onClick={handleSetting}
+              
+              onMouseOver={handle_el}
+              
             >
               <Avatar />
               <Menu
-                open={setting}
-                onClose={handleSetting}
+                open={el}
+                onClose={handle_close}
+                anchorEl={anchorEl}
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                anchorPosition={{ top: 200, left: 400 }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
               >
                 <MenuItem>
                   <Typography>Logout</Typography>
                 </MenuItem>
               </Menu>
             </IconButton>
-          </Tooltip>
+         
 
-          <IconButton sx={{ position: "absolute", right: "5%" }}>
-            <FiMenu color="white" size={40} />
-          </IconButton>
+          <Drawers />
         </Toolbar>
       </AppBar>
       <Dialog
@@ -139,70 +155,77 @@ function Navbar({ coin }: any) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <Box sx={{backgroundColor:"#E3F2FB",borderStyle:"solid"}}>
-        <DialogTitle id="alert-dialog-title">
-          <Typography sx={{ fontSize: "2rem", fontFamily: "Courier Prime",fontWeight: "bold",textAlign: "center"}}>
-            Add new history
-          </Typography>
-
-          <Box sx={{ position: "relative", marginLeft: "90%" }}>
-            <IconButton onClick={handleOpen}>
-              <AiFillCloseCircle size={50} color="#FF5D5D" />
-            </IconButton>
-          </Box>
-        </DialogTitle>
-        <DialogContent>
-          <FormControl>
-            <InputLabel sx={{ paddingTop: 2 }}>Coin pair</InputLabel>
-            <Stack
-              direction="row"
-              spacing={3}
-              sx={{ paddingTop: 2 }}
-              alignItems="center"
+        <Box sx={{ backgroundColor: "#E3F2FB", borderStyle: "solid" }}>
+          <DialogTitle id="alert-dialog-title">
+            <Typography
+              sx={{
+                fontSize: "2rem",
+                fontFamily: "Courier Prime",
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
             >
-              <Select
-                sx={{ position: "relative", width: 200 }}
-                onChange={handle_change_coinpair}
-              >
-                {coin_pair.result.map((item: cointype) => {
-                  return (
-                    <MenuItem value={item.symbol} key={item.id}>
-                      {item.symbol}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-              <TextField label="Buy" onChange={handle_change_buy} />
-            </Stack>
-          </FormControl>
-          <FormControl>
-            <Stack direction="column" spacing={3}>
-              <TextField
-                label="Amount"
-                sx={{ position: "relative", width: "90%", marginTop: 5 }}
-                value={amount}
-              />
-              <InputLabel sx={{ paddingTop: 12 }}>Group</InputLabel>
+              Add new history
+            </Typography>
 
-              <Select
-                label="Group"
-                sx={{
-                  position: "relative",
-                  width: "50%",
-                  height: "50%",
-                }}
-              ></Select>
-            </Stack>
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleOpen} color="primary">
-            close
-          </Button>
-          <Button onClick={() => {}} color="primary" autoFocus>
-            Save
-          </Button>
-        </DialogActions>
+            <Box sx={{ position: "relative", marginLeft: "90%" }}>
+              <IconButton onClick={handleOpen}>
+                <AiFillCloseCircle size={50} color="#FF5D5D" />
+              </IconButton>
+            </Box>
+          </DialogTitle>
+          <DialogContent>
+            <FormControl>
+              <InputLabel sx={{ paddingTop: 2 }}>Coin pair</InputLabel>
+              <Stack
+                direction="row"
+                spacing={3}
+                sx={{ paddingTop: 2 }}
+                alignItems="center"
+              >
+                <Select
+                  sx={{ position: "relative", width: 200 }}
+                  onChange={handle_change_coinpair}
+                >
+                  {coin_pair.result.map((item: cointype) => {
+                    return (
+                      <MenuItem value={item.symbol} key={item.id}>
+                        {item.symbol}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+                <TextField label="Buy" onChange={handle_change_buy} />
+              </Stack>
+            </FormControl>
+            <FormControl>
+              <Stack direction="column" spacing={3}>
+                <TextField
+                  label="Amount"
+                  sx={{ position: "relative", width: "90%", marginTop: 5 }}
+                  value={amount}
+                />
+                <InputLabel sx={{ paddingTop: 12 }}>Group</InputLabel>
+
+                <Select
+                  label="Group"
+                  sx={{
+                    position: "relative",
+                    width: "50%",
+                    height: "50%",
+                  }}
+                ></Select>
+              </Stack>
+            </FormControl>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleOpen} color="primary">
+              close
+            </Button>
+            <Button onClick={() => {}} color="primary" autoFocus>
+              Save
+            </Button>
+          </DialogActions>
         </Box>
       </Dialog>
     </div>
