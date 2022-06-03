@@ -5,7 +5,7 @@ const initialState:Savetype = {
     coin_pair:"THB_BTC",
     buy:0,
     amount:0,
-    group:null
+    group:1
 } 
 export const saveSlice = createSlice({
     name: 'save',
@@ -21,7 +21,7 @@ export const saveSlice = createSlice({
         update_amount: (state,action:PayloadAction<number>) => {
             return {...state,amount:action.payload}
         },
-        update_group: (state,action:PayloadAction<string>) => {
+        update_group: (state,action:PayloadAction<number>) => {
             return {...state,group:action.payload}
         }
     }
