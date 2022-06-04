@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect,useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   AppBar,
   Button,
@@ -36,9 +36,9 @@ import {
   update_userid,
 } from "../../redux/slide";
 import { RootState, AppDispatch } from "../../redux/store";
-import {supabase} from "../login/supabaseClient";
+import { supabase } from "../login/supabaseClient";
 import Drawers from "./Drawers";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 interface cointype {
   id: number;
   info: string;
@@ -49,9 +49,9 @@ interface Props {
   result: Array<cointype>;
 }
 function Navbar({ coin }: any) {
-  const [users,setuser] = useState<any|null>({
-    id:"noob"
-  })
+  const [users, setuser] = useState<any | null>({
+    id: "noob",
+  });
   const dispatch = useDispatch<AppDispatch>();
   const [setting, setSetting] = useState(false);
   const [anchorEl, setanchorEl] = useState(null);
@@ -61,19 +61,19 @@ function Navbar({ coin }: any) {
   const amount = useSelector((state: RootState) => state.save.amount);
   const buy = useSelector((state: RootState) => state.save.buy);
   useEffect(() => {
-    const user = supabase.auth.user()
-    setuser(user)
-    console.log(users)
-    dispatch(update_userid(users!.id))
-    
-  }
-  ,[buy])
-  
-  const router = useRouter()
-  const handle_logout = () =>{
+    const user = supabase.auth.user();
+    setuser(user);
+    console.log(users);
+  }, [open]);
+  useEffect(() => {
+    dispatch(update_userid(users.id));
+  }, [buy]);
+
+  const router = useRouter();
+  const handle_logout = () => {
     supabase.auth.signOut();
-    router.push('/')
-  }
+    router.push("/");
+  };
 
   const handleOpen = () => {
     setOpen(!open);
@@ -95,21 +95,21 @@ function Navbar({ coin }: any) {
   };
   const state_now = useSelector((state: RootState) => state.save);
   const sent_history = async () => {
-    
-    const {data,error} = await supabase.from("Historys").insert([{
-      user_id:state_now.user_id,
-      coin_pair:state_now.coin_pair,
-      buy:state_now.buy,
-      amount:state_now.amount,
-      price_coin:state_now.price,
-      group_name:state_now.group,
-    }])
-    console.log(error)
-  }
-
+    const { data, error } = await supabase.from("Historys").insert([
+      {
+        user_id: state_now.user_id,
+        coin_pair: state_now.coin_pair,
+        buy: state_now.buy,
+        amount: state_now.amount,
+        price_coin: state_now.price,
+        group_name: state_now.group,
+      },
+    ]);
+    console.log(error);
+  };
 
   useEffect(() => {
-    console.log(anchorEl)
+    console.log(anchorEl);
   }, [anchorEl]);
   const el = Boolean(anchorEl);
   const coin_state = useSelector((state: RootState) => state.save.coin_pair);
@@ -121,14 +121,13 @@ function Navbar({ coin }: any) {
       });
   };
   const save_state = useSelector<RootState>((state) => state.save.coin_pair);
-  
+
   useEffect(() => {
     fetch_price();
     const price = last_price;
     const buys = buy;
     dispatch(update_amount(buys / price));
     dispatch(update_price(price));
-
   }, [coin_state, last_price, buy]);
 
   return (
@@ -160,30 +159,27 @@ function Navbar({ coin }: any) {
               </Typography>
             </Box>
           </Button>
-         
-            <IconButton
-              sx={{ position: "absolute", right: "20%" }}
-              
-              onMouseOver={handle_el}
-              
+
+          <IconButton
+            sx={{ position: "absolute", right: "20%" }}
+            onMouseOver={handle_el}
+          >
+            <Avatar />
+            <Menu
+              open={el}
+              onClose={handle_close}
+              anchorEl={anchorEl}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
             >
-              <Avatar />
-              <Menu
-                open={el}
-                onClose={handle_close}
-                anchorEl={anchorEl}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-              >
-                <MenuItem onClick={handle_logout}>
-                  <Typography>Logout</Typography>
-                </MenuItem>
-              </Menu>
-            </IconButton>
-         
+              <MenuItem onClick={handle_logout}>
+                <Typography>Logout</Typography>
+              </MenuItem>
+            </Menu>
+          </IconButton>
 
           <Drawers />
         </Toolbar>
