@@ -49,7 +49,9 @@ interface Props {
   result: Array<cointype>;
 }
 function Navbar({ coin }: any) {
-  const [users,setuser] = useState<any|null>(null)
+  const [users,setuser] = useState<any|null>({
+    id:"noob"
+  })
   const [setting, setSetting] = useState(false);
   const [anchorEl, setanchorEl] = useState(null);
   const [open, setOpen] = useState(false);
@@ -60,11 +62,11 @@ function Navbar({ coin }: any) {
   useEffect(() => {
     const user = supabase.auth.user()
     setuser(user)
-    console.log(user)
+    console.log(users)
     dispatch(update_userid(users!.id))
     
   }
-  ,[])
+  ,[buy])
   
   const router = useRouter()
   const handle_logout = () =>{
