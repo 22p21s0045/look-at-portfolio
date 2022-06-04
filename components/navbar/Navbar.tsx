@@ -52,6 +52,7 @@ function Navbar({ coin }: any) {
   const [users,setuser] = useState<any|null>({
     id:"noob"
   })
+  const dispatch = useDispatch<AppDispatch>();
   const [setting, setSetting] = useState(false);
   const [anchorEl, setanchorEl] = useState(null);
   const [open, setOpen] = useState(false);
@@ -92,6 +93,21 @@ function Navbar({ coin }: any) {
   const handle_close = () => {
     setanchorEl(null);
   };
+  const state_now = useSelector((state: RootState) => state.save);
+  const sent_history = async () => {
+    
+    const {data,error} = await supabase.from("Historys").insert([{
+      user_id:state_now.user_id,
+      coin_pair:state_now.coin_pair,
+      buy:state_now.buy,
+      amount:state_now.amount,
+      price_coin:state_now.price,
+      group_name:state_now.group,
+    }])
+    console.log(error)
+  }
+
+
   useEffect(() => {
     console.log(anchorEl)
   }, [anchorEl]);
@@ -105,7 +121,7 @@ function Navbar({ coin }: any) {
       });
   };
   const save_state = useSelector<RootState>((state) => state.save.coin_pair);
-  const dispatch = useDispatch<AppDispatch>();
+  
   useEffect(() => {
     fetch_price();
     const price = last_price;
@@ -245,7 +261,7 @@ function Navbar({ coin }: any) {
             <Button onClick={handleOpen} color="primary">
               close
             </Button>
-            <Button onClick={() => {}} color="primary" autoFocus>
+            <Button onClick={sent_history} color="primary" autoFocus>
               Save
             </Button>
           </DialogActions>
