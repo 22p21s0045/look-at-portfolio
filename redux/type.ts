@@ -2,6 +2,7 @@ interface Savetype {
   coin_pair: string|null;
   buy: number;
   amount: number;
+  price: number;
   group:number|null; //nullable
 }
 interface State {

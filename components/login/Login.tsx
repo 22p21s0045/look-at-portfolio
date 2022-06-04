@@ -12,14 +12,24 @@ import Image from "next/image";
 
 function Login() {
   async function signInWithGoogle() {
-    const { user, session, error } = await supabase.auth.signIn({
-      provider: 'google',
-    })
+    const { user, session, error } = await supabase.auth.signIn(
+      {
+        provider: "google",
+      },
+      {
+        redirectTo: "http://localhost:3000/dashboard/1",
+      }
+    );
   }
   async function signInWithGithub() {
-    const { user, session, error } = await supabase.auth.signIn({
-      provider: "github",
-    });
+    const { user, session, error } = await supabase.auth.signIn(
+      {
+        provider: "github",
+      },
+      {
+        redirectTo: "http://localhost:3000/dashboard/1",
+      }
+    );
   }
   return (
     <div>
@@ -45,10 +55,14 @@ function Login() {
         >
           <Stack spacing={0} direction="column" alignItems="center">
             <h1>Log in</h1>
-            <Box sx={{marginTop:-5}}>
-            <Lottie animationData={Cat} loop={true} style={{width:350,height:170,marginTop:0,paddingTop:0}}/>
+            <Box sx={{ marginTop: -5 }}>
+              <Lottie
+                animationData={Cat}
+                loop={true}
+                style={{ width: 350, height: 170, marginTop: 0, paddingTop: 0 }}
+              />
             </Box>
-            
+
             <GoogleLoginButton
               onClick={signInWithGoogle}
               style={{

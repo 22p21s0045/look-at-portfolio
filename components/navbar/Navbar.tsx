@@ -32,9 +32,12 @@ import {
   update_buy,
   update_group,
   update_amount,
+  update_price,
 } from "../../redux/slide";
 import { RootState, AppDispatch } from "../../redux/store";
+import {supabase} from "../login/supabaseClient";
 import Drawers from "./Drawers";
+import { useRouter } from 'next/router'
 interface cointype {
   id: number;
   info: string;
@@ -52,6 +55,11 @@ function Navbar({ coin }: any) {
   const [last_price, setLastPrice] = useState(0);
   const amount = useSelector((state: RootState) => state.save.amount);
   const buy = useSelector((state: RootState) => state.save.buy);
+  const router = useRouter()
+  const handle_logout = () =>{
+    supabase.auth.signOut();
+    router.push('/')
+  }
 
   const handleOpen = () => {
     setOpen(!open);
@@ -90,6 +98,8 @@ function Navbar({ coin }: any) {
     const price = last_price;
     const buys = buy;
     dispatch(update_amount(buys / price));
+    dispatch(update_price(price));
+
   }, [coin_state, last_price, buy]);
 
   return (
@@ -139,7 +149,7 @@ function Navbar({ coin }: any) {
                   horizontal: "left",
                 }}
               >
-                <MenuItem>
+                <MenuItem onClick={handle_logout}>
                   <Typography>Logout</Typography>
                 </MenuItem>
               </Menu>
