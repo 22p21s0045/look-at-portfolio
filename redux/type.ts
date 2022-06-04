@@ -4,6 +4,7 @@ interface Savetype {
   amount: number;
   price: number;
   group:number|null; //nullable
+  user_id:string|null;
 }
 interface State {
     Save:{

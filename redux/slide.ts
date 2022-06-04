@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { supabase } from '../components/login/supabaseClient';
 import { group } from 'console';
 import type { Savetype } from './type';
 const initialState:Savetype = {
@@ -6,7 +7,8 @@ const initialState:Savetype = {
     buy:0,
     amount:0,
     price:0,
-    group:1
+    group:1,
+    user_id:null,
 } 
 export const saveSlice = createSlice({
     name: 'save',
@@ -27,12 +29,15 @@ export const saveSlice = createSlice({
         },
         update_group: (state,action:PayloadAction<number>) => {
             return {...state,group:action.payload}
+        },
+        update_userid: (state,action:PayloadAction<string|null>) => {
+            return {...state,user_id:action.payload}
         }
 
     }
 
 })
 
-export const {update_coin_pair,update_buy, update_group,update_amount,update_price} = saveSlice.actions;
+export const {update_coin_pair,update_buy, update_group,update_amount,update_price, update_userid} = saveSlice.actions;
 export default saveSlice.reducer;
   

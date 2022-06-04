@@ -33,6 +33,7 @@ import {
   update_group,
   update_amount,
   update_price,
+  update_userid,
 } from "../../redux/slide";
 import { RootState, AppDispatch } from "../../redux/store";
 import {supabase} from "../login/supabaseClient";
@@ -48,7 +49,7 @@ interface Props {
   result: Array<cointype>;
 }
 function Navbar({ coin }: any) {
-  const [user,setuser] = useState<any|null>(null)
+  const [users,setuser] = useState<any|null>(null)
   const [setting, setSetting] = useState(false);
   const [anchorEl, setanchorEl] = useState(null);
   const [open, setOpen] = useState(false);
@@ -60,6 +61,8 @@ function Navbar({ coin }: any) {
     const user = supabase.auth.user()
     setuser(user)
     console.log(user)
+    dispatch(update_userid(users!.id))
+    
   }
   ,[])
   
