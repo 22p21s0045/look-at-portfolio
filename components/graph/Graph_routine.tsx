@@ -34,7 +34,9 @@ function Graph_routine(data: any) {
       <Paper>
         <Line
           data={{
-            labels: graph_data.data.body.map((item: any) => new Date (item.created_at).toLocaleDateString()),
+            labels: graph_data.data.body.map((item: any) =>
+              new Date(item.created_at).toLocaleDateString()
+            ),
             datasets: [
               {
                 label: "Buy",
@@ -51,7 +53,7 @@ function Graph_routine(data: any) {
           options={{
             elements: {
               line: {
-                tension: 0, // disables bezier curves
+                tension: 0.25, // disables bezier curves
               },
             },
           }}

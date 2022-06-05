@@ -32,12 +32,14 @@ export const saveSlice = createSlice({
         },
         update_userid: (state,action:PayloadAction<string|null>) => {
             return {...state,user_id:action.payload}
+        },
+        clear_state: (state,action:PayloadAction<void>) => {
+            return initialState
         }
-
     }
 
 })
 
-export const {update_coin_pair,update_buy, update_group,update_amount,update_price, update_userid} = saveSlice.actions;
+export const {update_coin_pair,update_buy, update_group,update_amount,update_price, update_userid,clear_state} = saveSlice.actions;
 export default saveSlice.reducer;
   

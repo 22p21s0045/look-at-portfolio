@@ -29,6 +29,7 @@ export async function getServerSideProps() {
       coin: data,
       graph_data:graph_data
     },
+    
   };
 }
 export default id;
