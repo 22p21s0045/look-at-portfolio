@@ -1,4 +1,5 @@
 import React from "react";
+import {useState, useEffect} from "react";
 import Navbar from "../../components/navbar/Navbar";
 import type { Props } from "../../components/navbar/Navbar";
 import {InferGetStaticPropsType} from "next";
