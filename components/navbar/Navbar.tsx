@@ -22,6 +22,7 @@ import {
   TextField,
   Stack,
   Snackbar,
+  Alert,
 } from "@mui/material";
 import Image from "next/image";
 import { FiMenu } from "react-icons/fi";
@@ -34,7 +35,8 @@ import {
   update_group,
   update_amount,
   update_price,
-  update_userid,clear_state
+  update_userid,
+  clear_state,
 } from "../../redux/slide";
 import { RootState, AppDispatch } from "../../redux/store";
 import { supabase } from "../login/supabaseClient";
@@ -54,6 +56,7 @@ function Navbar({ coin }: any) {
     id: "noob",
   });
   const dispatch = useDispatch<AppDispatch>();
+  const [snakbar_error, setsnakbar_error] = useState(false);
   const [snakbar, setsnakbar] = useState(false);
   const [setting, setSetting] = useState(false);
   const [anchorEl, setanchorEl] = useState(null);
@@ -97,7 +100,10 @@ function Navbar({ coin }: any) {
   };
   const handle_snakbar = () => {
     setsnakbar(!snakbar);
-  }
+  };
+  const handle_snakbar_error = () => {
+    setsnakbar(!snakbar);
+  };
   const state_now = useSelector((state: RootState) => state.save);
   const sent_history = async () => {
     const { data, error } = await supabase.from("Historys").insert([
@@ -109,16 +115,15 @@ function Navbar({ coin }: any) {
         price_coin: state_now.price,
         group_name: state_now.group,
       },
-    ])
+    ]);
     if (error) {
       console.log(error);
       handleOpen();
+      handle_snakbar_error();
     }
     dispatch(clear_state());
     handleOpen();
     handle_snakbar();
-  
-    
   };
 
   useEffect(() => {
@@ -276,7 +281,22 @@ function Navbar({ coin }: any) {
           </DialogActions>
         </Box>
       </Dialog>
-      <Snackbar open={snakbar} autoHideDuration={3000} message="Success" onClose={handle_snakbar}/>
+      <Snackbar
+        open={snakbar}
+        autoHideDuration={3000}
+        message="Success"
+        onClose={handle_snakbar}
+      >
+        <Alert severity="success">Save success</Alert>
+      </Snackbar>
+      <Snackbar
+        open={snakbar_error}
+        autoHideDuration={3000}
+        message="Error"
+        onClose={handle_snakbar_error}
+      >
+        <Alert severity="error">Save error</Alert>
+      </Snackbar>
     </div>
   );
 }
