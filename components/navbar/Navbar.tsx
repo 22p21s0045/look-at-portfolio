@@ -21,6 +21,7 @@ import {
   InputLabel,
   TextField,
   Stack,
+  Snackbar,
 } from "@mui/material";
 import Image from "next/image";
 import { FiMenu } from "react-icons/fi";
@@ -33,7 +34,7 @@ import {
   update_group,
   update_amount,
   update_price,
-  update_userid,
+  update_userid,clear_state
 } from "../../redux/slide";
 import { RootState, AppDispatch } from "../../redux/store";
 import { supabase } from "../login/supabaseClient";
@@ -53,6 +54,7 @@ function Navbar({ coin }: any) {
     id: "noob",
   });
   const dispatch = useDispatch<AppDispatch>();
+  const [snakbar, setsnakbar] = useState(false);
   const [setting, setSetting] = useState(false);
   const [anchorEl, setanchorEl] = useState(null);
   const [open, setOpen] = useState(false);
@@ -93,6 +95,9 @@ function Navbar({ coin }: any) {
   const handle_close = () => {
     setanchorEl(null);
   };
+  const handle_snakbar = () => {
+    setsnakbar(!snakbar);
+  }
   const state_now = useSelector((state: RootState) => state.save);
   const sent_history = async () => {
     const { data, error } = await supabase.from("Historys").insert([
@@ -104,8 +109,16 @@ function Navbar({ coin }: any) {
         price_coin: state_now.price,
         group_name: state_now.group,
       },
-    ]);
-    console.log(error);
+    ])
+    if (error) {
+      console.log(error);
+      handleOpen();
+    }
+    dispatch(clear_state());
+    handleOpen();
+    handle_snakbar();
+  
+    
   };
 
   useEffect(() => {
@@ -263,6 +276,7 @@ function Navbar({ coin }: any) {
           </DialogActions>
         </Box>
       </Dialog>
+      <Snackbar open={snakbar} autoHideDuration={3000} message="Success" onClose={handle_snakbar}/>
     </div>
   );
 }

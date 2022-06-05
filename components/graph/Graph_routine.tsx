@@ -14,6 +14,8 @@ import {
 } from "chart.js";
 import { supabase } from "../../components/login/supabaseClient";
 import type { DATA } from "./type";
+import {useSelector} from "react-redux";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -24,6 +26,7 @@ ChartJS.register(
   Legend
 );
 function Graph_routine(data: any) {
+  const gloabal_state = useSelector((state: any) => state.save);
   const [graph_data, setGraph_data] = useState(data);
   useEffect(() => {
     setGraph_data(graph_data);
