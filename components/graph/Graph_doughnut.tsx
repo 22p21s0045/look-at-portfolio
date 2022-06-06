@@ -36,7 +36,7 @@ function Graph_doughnut(data: any) {
       <Paper sx={{ height: "50vh" }}>
         <Doughnut
           data={{
-            labels: graph_data.data.body.map((item: any) => item.coin_pair),
+            labels: graph_data.data.body.map((item:DATA) => item.coin_pairs),
             datasets: [
               {
                 data: graph_data.data.body.map((item: any) => item.buy),
