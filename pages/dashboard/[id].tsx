@@ -7,6 +7,7 @@ import {InferGetStaticPropsType} from "next";
 import { Grid } from '@mui/material';
 import {supabase} from "../../components/login/supabaseClient";
 import Graph_routine from "../../components/graph/Graph_routine";
+import Graph_doughnut from "../../components/graph/Graph_doughnut";
 function id({coin,graph_data}:InferGetStaticPropsType<typeof getServerSideProps>) {
   return (
     <div>
@@ -14,6 +15,9 @@ function id({coin,graph_data}:InferGetStaticPropsType<typeof getServerSideProps>
       <Grid container spacing={3}>
         <Grid item xs={12} md ={6} lg={6} sx={{marginTop:"10vh"}}>
           <Graph_routine data={graph_data}/>
+          </Grid>
+          <Grid item xs={12} md ={6} lg={6} sx={{marginTop:"10vh"}}>
+          <Graph_doughnut data={graph_data}/>
           </Grid>
         </Grid>
     </div>

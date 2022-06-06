@@ -10,7 +10,7 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend,
+  Legend
 } from "chart.js";
 import { supabase } from "../../components/login/supabaseClient";
 import type { DATA } from "./type";
