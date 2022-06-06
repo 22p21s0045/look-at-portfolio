@@ -22,7 +22,7 @@ function id({coin,graph_data}:InferGetStaticPropsType<typeof getServerSideProps>
 export async function getServerSideProps() {
   const res = await fetch("https://api.bitkub.com/api/market/symbols");
   const data:Props = await res.json();
-  const graph_data= await supabase.from<DATA>("Historys").select("buy,created_at");
+  const graph_data= await supabase.from<DATA>("Historys").select("buy,created_at,coin_pair");
   
 
   return {
