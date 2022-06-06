@@ -28,6 +28,10 @@ function Graph_doughnut(data: any) {
     console.log(graph_data);
     setGraph_data({ data: graph_data });
   };
+  const aftertitle_tooltip= (TooltipItem: any) => {
+    console.log(TooltipItem[0].dataIndex);
+    return `${graph_data.data.body[TooltipItem[0].dataIndex].amount} ${graph_data.data.body[TooltipItem[0].dataIndex].coin_pair}`;
+  };
   useEffect(() => {
     handle_newdata();
   }, [gloabal_state]);
@@ -36,7 +40,7 @@ function Graph_doughnut(data: any) {
       <Paper sx={{ height: "50vh" }}>
         <Doughnut
           data={{
-            labels: graph_data.data.body.map((item:DATA) => item.coin_pairs),
+            labels: graph_data.data.body.map((item:DATA) => item.coin_pair),
             datasets: [
               {
                 data: graph_data.data.body.map((item: any) => item.buy),
@@ -65,8 +69,13 @@ function Graph_doughnut(data: any) {
           }}
           options={{
             maintainAspectRatio: false,
-           
-
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        afterTitle:aftertitle_tooltip
+                    }
+                }
+            },
           }}
         />
       </Paper>
