@@ -27,11 +27,21 @@ ChartJS.register(
 );
 function Graph_routine(data: any) {
   const gloabal_state = useSelector((state: any) => state.save);
-  const [graph_data, setGraph_data] = useState(data);
-  useEffect(() => {
-    setGraph_data(graph_data);
+  const [graph_data, setGraph_data] = useState({...data});
+  const [news,setnews] = useState<any>(null)
+  const handle_newdata = async() => {
+    const graph_data= await supabase.from<DATA>("Historys").select("buy,created_at");
+    // setGraph_data(graph_data);
     console.log(graph_data);
-  }, [graph_data]);
+    setGraph_data({data:graph_data});
+   
+  }
+  useEffect(() => {
+    handle_newdata();
+    
+    
+    
+  }, [gloabal_state]);
   return (
     <div>
       <Paper>
