@@ -26,7 +26,6 @@ ChartJS.register(
   Legend
 );
 
-
 function Graph_routine(data: any) {
   const gloabal_state = useSelector((state: any) => state.save);
   const [graph_data, setGraph_data] = useState({ ...data });
@@ -34,18 +33,19 @@ function Graph_routine(data: any) {
   const handle_newdata = async () => {
     const graph_data = await supabase
       .from<DATA>("Historys")
-      .select("buy,created_at,coin_pair");
+      .select("buy,created_at,coin_pair,amount");
     // setGraph_data(graph_data);
     console.log(graph_data);
     setGraph_data({ data: graph_data });
   };
-  const title_tooltip = (TooltipItem:any) => {
+  const title_tooltip = (TooltipItem: any) => {
     console.log(TooltipItem[0].dataIndex);
     return graph_data.data.body[TooltipItem[0].dataIndex].coin_pair;
-   
-  
-   
-  }
+  };
+  const aftertitle_tooltip= (TooltipItem: any) => {
+    console.log(TooltipItem[0].dataIndex);
+    return graph_data.data.body[TooltipItem[0].dataIndex].amount;
+  };
   useEffect(() => {
     handle_newdata();
   }, [gloabal_state]);
@@ -80,10 +80,10 @@ function Graph_routine(data: any) {
               tooltip: {
                 callbacks: {
                   title: title_tooltip,
-                }
-
-              }}           
-
+                  afterTitle:aftertitle_tooltip
+                },
+              },
+            },
           }}
         />
       </Paper>
