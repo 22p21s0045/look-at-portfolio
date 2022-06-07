@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Paper, Typography, Button } from "@mui/material";
 import { If, Then, Else, When, Unless, Switch, Case, Default } from "react-if";
+import { count } from "console";
 function Sumary_board(data: any) {
   const [graph_data, setGraph_data] = useState({ ...data });
   const [sumary_data, setSumary_data] = useState(null);
@@ -25,10 +26,17 @@ function Sumary_board(data: any) {
     }
     return acc;
   }, {});
-
+const arrays:any = [];
+for (const key in result) {
+  arrays.push({
+    coin_pair: key,
+    buy: result[key].buy,
+    amount: result[key].amount,
+  });}
   useEffect(() => {
     setGraph_data({ ...data, result });
-    setSumary_data(result);
+    setSumary_data(arrays);
+    console.log(sumary_data);
     console.log(sumary_data);
     
 
@@ -65,6 +73,17 @@ function Sumary_board(data: any) {
             Summary Board
           </Typography>
           <Button onClick={handle_show}>Hide</Button>
+          {sumary_data.map((item: any) => {
+            return (
+              <div>
+                <Typography>
+                  {item.coin_pair} : {item.buy}
+                </Typography>
+              </div>
+            );
+
+          }
+          )}
         </Paper>
       </div>
     );
