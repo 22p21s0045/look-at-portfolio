@@ -25,14 +25,15 @@ function Graph_doughnut(data: any) {
       .from<DATA>("Historys")
       .select("buy,created_at,coin_pair,amount");
     // setGraph_data(graph_data);
-    console.log(graph_data);
+    
     setGraph_data({ data: graph_data });
   };
   const aftertitle_tooltip= (TooltipItem: any) => {
-    console.log(TooltipItem[0].dataIndex);
-    return `${graph_data.data.body[TooltipItem[0].dataIndex].amount} ${graph_data.data.body[TooltipItem[0].dataIndex].coin_pair}`;
+   
+    return `${graph_data.data.body[TooltipItem[0].dataIndex].amount} ${graph_data.data.body[TooltipItem[0].dataIndex].coin_pair.split('_')[1]}`;
   };
   useEffect(() => {
+    
     handle_newdata();
   }, [gloabal_state]);
   return (
