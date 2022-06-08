@@ -1,11 +1,11 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Paper, Typography, Button } from "@mui/material";
+import { Paper, Typography, Button, Stack, Box } from "@mui/material";
 import { If, Then, Else, When, Unless, Switch, Case, Default } from "react-if";
 import { count } from "console";
 function Sumary_board(data: any) {
   const [graph_data, setGraph_data] = useState({ ...data });
-  const [sumary_data, setSumary_data] = useState(null);
+  const [sumary_data, setSumary_data] = useState<null | any>(null);
   const [show, setshow] = useState(false);
   const handle_show = () => {
     setshow(!show);
@@ -26,19 +26,19 @@ function Sumary_board(data: any) {
     }
     return acc;
   }, {});
-const arrays:any = [];
-for (const key in result) {
-  arrays.push({
-    coin_pair: key,
-    buy: result[key].buy,
-    amount: result[key].amount,
-  });}
+  const arrays: any = [];
+  for (const key in result) {
+    arrays.push({
+      coin_pair: key,
+      buy: result[key].buy,
+      amount: result[key].amount,
+    });
+  }
   useEffect(() => {
     setGraph_data({ ...data, result });
     setSumary_data(arrays);
     console.log(sumary_data);
     console.log(sumary_data);
-    
 
     console.log("Set state success");
   }, []);
@@ -73,17 +73,22 @@ for (const key in result) {
             Summary Board
           </Typography>
           <Button onClick={handle_show}>Hide</Button>
-          {sumary_data.map((item: any) => {
-            return (
-              <div>
-                <Typography>
-                  {item.coin_pair} : {item.buy}
-                </Typography>
-              </div>
-            );
-
-          }
-          )}
+          <Box sx={{display: "grid", gridTemplateColumns: 'repeat(2, 1fr)',columnGap: 4,rowGap: 3}}>
+            {sumary_data.map((item: any) => {
+              return (
+                <Box
+                  key={item.coin_pair}
+                  sx={{ borderColor: "black", borderStyle: "solid",borderRadius:5,height: "100px" }}
+                >
+                  <Box >
+                    <Typography>
+                      {item.coin_pair} : {item.buy}
+                    </Typography>
+                  </Box>
+                </Box>
+              );
+            })}
+          </Box>
         </Paper>
       </div>
     );
