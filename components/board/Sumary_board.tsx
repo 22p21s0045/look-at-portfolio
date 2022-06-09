@@ -63,7 +63,7 @@ function Sumary_board(data: any) {
   } else {
     return (
       <div>
-        <Paper sx={{ textAlign: "center", background: "#FFCECE" }}>
+        <Paper sx={{ textAlign: "center", background: "#FFCECE"}}>
           <Typography
             sx={{
               fontFamily: "Courier Prime",
