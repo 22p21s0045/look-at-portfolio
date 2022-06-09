@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Paper, Typography, Button, Stack, Box } from "@mui/material";
 import { If, Then, Else, When, Unless, Switch, Case, Default } from "react-if";
 import { count } from "console";
+import Image from "next/image";
 function Sumary_board(data: any) {
   const [graph_data, setGraph_data] = useState({ ...data });
   const [sumary_data, setSumary_data] = useState<null | any>(null);
@@ -78,12 +79,17 @@ function Sumary_board(data: any) {
               return (
                 <Box
                   key={item.coin_pair}
-                  sx={{ borderColor: "black", borderStyle: "solid",borderRadius:5,height: "100px" }}
+                  sx={{ borderColor: "black", borderStyle: "solid",borderRadius:5,height: "100px",background: "linear-gradient(180deg, rgba(249, 213, 167, 0.630208) 0%, rgba(252, 203, 182, 0.831496) 47.92%, #FFC3C3 88.02%);" }}
                 >
                   <Box >
-                    <Typography>
-                      {item.coin_pair} : {item.buy}
+                    <Stack direction="row" justifyContent="center" spacing={2} alignItems="center" mt={3}>
+                      <Box>
+                    <Image src= {`https://crypto-icon-api.herokuapp.com/api/icon/${item.coin_pair.split("_")[1].toLowerCase()}`} height={50} width={50}/>
+                    </Box>
+                    <Typography sx={{fontFamily:"Courier Prime",fontSize: "1.5rem"}}>
+                    {item.amount} {item.coin_pair.split("_")[1]}  
                     </Typography>
+                    </Stack>
                   </Box>
                 </Box>
               );
