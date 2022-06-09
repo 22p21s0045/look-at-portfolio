@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Paper, Typography, Button, Stack, Box } from "@mui/material";
+import { Paper, Typography, Button, Stack, Box, Tooltip } from "@mui/material";
 import { If, Then, Else, When, Unless, Switch, Case, Default } from "react-if";
 import { count } from "console";
 import Image from "next/image";
@@ -63,7 +63,7 @@ function Sumary_board(data: any) {
   } else {
     return (
       <div>
-        <Paper sx={{ textAlign: "center" }}>
+        <Paper sx={{ textAlign: "center", background: "#FFCECE" }}>
           <Typography
             sx={{
               fontFamily: "Courier Prime",
@@ -74,24 +74,55 @@ function Sumary_board(data: any) {
             Summary Board
           </Typography>
           <Button onClick={handle_show}>Hide</Button>
-          <Box sx={{display: "grid", gridTemplateColumns: 'repeat(2, 1fr)',columnGap: 4,rowGap: 3}}>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              columnGap: 4,
+              rowGap: 3,
+            }}
+          >
             {sumary_data.map((item: any) => {
               return (
-                <Box
-                  key={item.coin_pair}
-                  sx={{ borderColor: "black", borderStyle: "solid",borderRadius:5,height: "100px",background: "linear-gradient(180deg, rgba(249, 213, 167, 0.630208) 0%, rgba(252, 203, 182, 0.831496) 47.92%, #FFC3C3 88.02%);" }}
-                >
-                  <Box >
-                    <Stack direction="row" justifyContent="center" spacing={2} alignItems="center" mt={3}>
+                <Tooltip title={`In investing ≈ ${item.buy} THB`}>
+                  <Box
+                    key={item.coin_pair}
+                    sx={{
+                      borderColor: "black",
+                      borderStyle: "solid",
+                      borderRadius: 5,
+                      height: "100px",
+                      width:"90%",
+                      margin: "auto",
+                      background:
+                        "linear-gradient(180deg, rgba(249, 213, 167, 0.630208) 0%, rgba(252, 203, 182, 0.831496) 47.92%, #FFC3C3 88.02%);",
+                    }}
+                  >
+                    <Stack
+                      direction="row"
+                      justifyContent="center"
+                      spacing={2}
+                      alignItems="center"
+                      mt={3}
+                    >
                       <Box>
-                    <Image src= {`https://crypto-icon-api.herokuapp.com/api/icon/${item.coin_pair.split("_")[1].toLowerCase()}`} height={50} width={50}/>
-                    </Box>
-                    <Typography sx={{fontFamily:"Courier Prime",fontSize: "1.5rem"}}>
-                    {item.amount} {item.coin_pair.split("_")[1]}  
-                    </Typography>
+                        <Image
+                          src={`https://crypto-icon-api.herokuapp.com/api/icon/${item.coin_pair
+                            .split("_")[1]
+                            .toLowerCase()}`}
+                          height={50}
+                          width={50}
+                        />
+                      </Box>
+                      <Typography
+                        sx={{ fontFamily: "Courier Prime", fontSize: "1.5rem" }}
+                      >
+                        {Math.round(item.amount * 100000) / 100000}{" "}
+                        {item.coin_pair.split("_")[1]}
+                      </Typography>
                     </Stack>
                   </Box>
-                </Box>
+                </Tooltip>
               );
             })}
           </Box>
