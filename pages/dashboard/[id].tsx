@@ -9,6 +9,7 @@ import {supabase} from "../../components/login/supabaseClient";
 import Graph_routine from "../../components/graph/Graph_routine";
 import Graph_doughnut from "../../components/graph/Graph_doughnut";
 import Sumary_board from "../../components/board/Sumary_board";
+import Graph_profit from "../../components/graph/Graph_profit";
 function id({coin,graph_data}:InferGetStaticPropsType<typeof getServerSideProps>) {
   return (
     <div>
@@ -20,8 +21,11 @@ function id({coin,graph_data}:InferGetStaticPropsType<typeof getServerSideProps>
           <Grid item xs={12} md ={6} lg={6} sx={{marginTop:"10vh"}}>
           <Graph_doughnut data={graph_data}/>
           </Grid>
-          <Grid item xs={12} md ={6} lg={6} sx={{marginTop:"10vh"}}>
+          <Grid item xs={12} md ={6} lg={4} sx={{marginTop:"10vh"}}>
           <Sumary_board data={graph_data}/>
+          </Grid>
+          <Grid item lg={4}>
+            <Graph_profit/>
           </Grid>
 
         </Grid>
