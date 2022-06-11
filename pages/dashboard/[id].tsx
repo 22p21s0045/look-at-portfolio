@@ -22,11 +22,8 @@ function id({
     setdata({ data: data });
   };
   useEffect(() => {
-    get_supabase().then(() => {
-      console.log(supadata);
-      
-    });
-   
+    get_supabase();
+
     console.log(supadata);
   }, []);
 

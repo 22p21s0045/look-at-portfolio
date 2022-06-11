@@ -6,6 +6,7 @@ const getdata = async () => {
   const { data, error } = await supabase
     .from("Historys")
     .select("coin_pair,amount");
+    
 
   return data;
 };
@@ -31,6 +32,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const amount:any = await getdata();
+ 
   const lastest_price_data: any = await lastest_price();
 
   let sum = 0;
