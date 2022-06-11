@@ -4,7 +4,10 @@ import { Paper, Typography, Box } from "@mui/material";
 import axios from "axios";
 import { supabase } from "../login/supabaseClient";
 import { AiOutlineCaretDown } from "react-icons/ai";
+import { motion } from "framer-motion";
 function Graph_profit(data: any) {
+  const [time, set_time] = useState(new Date());
+
   const [lastest, setlastest] = useState<any>(0);
   const [supasum, setsum] = useState<any>(0);
   const supabase_sum = async () => {
@@ -20,6 +23,7 @@ function Graph_profit(data: any) {
       });
   };
   useEffect(() => {
+    set_time(new Date());
     lastest_price_data();
     supabase_sum();
   }, []);
@@ -30,16 +34,16 @@ function Graph_profit(data: any) {
         <Paper
           sx={{
             backgroundColor: "#FF8C8C",
-            fontfamily: "Courier Prime",
-            
+            fontFamily: "Courier Prime",
+            width: "100%",
           }}
         >
           <Typography
             sx={{
               textAlign: "center",
-              fontfamily: "Courier Prime",
+              fontFamily: "Courier Prime",
               fontSize: "2rem",
-              paddingTop: "10%",
+              paddingTop: "5%",
               position: "relative",
             }}
           >
@@ -50,8 +54,26 @@ function Graph_profit(data: any) {
           >
             {Math.round(lastest.sum - supasum)}
           </Typography>
-          <Box sx={{left:"50%",position:"relative"}}>
-            <AiOutlineCaretDown size={50}/>
+          <Box>
+            <motion.div
+              animate={{
+                y: [0, -10, 0],
+                transition: {
+                  duration: 2,
+                  ease: "easeInOut",
+                  times: [0, 0.2, 1],
+                  repeat: Infinity,
+                },
+              }}
+            >
+              <AiOutlineCaretDown
+                size={50}
+                style={{ position: "relative", left: "47%" }}
+              />
+            </motion.div>
+          </Box>
+          <Box sx={{ left: "2%", position: "relative" }}>
+            {time.toLocaleString()}
           </Box>
         </Paper>
       </div>
@@ -63,7 +85,7 @@ function Graph_profit(data: any) {
           <Typography
             sx={{
               textAlign: "center",
-              fontfamily: "Courier Prime",
+              fontFamily: "Courier Prime",
               fontSize: "2rem",
               paddingTop: "10%",
               position: "relative",
@@ -76,7 +98,6 @@ function Graph_profit(data: any) {
           >
             {Math.round(lastest.sum - supasum)}
           </Typography>
-          
         </Paper>
       </div>
     );
