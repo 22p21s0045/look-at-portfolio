@@ -10,11 +10,12 @@ import Graph_routine from "../../components/graph/Graph_routine";
 import Graph_doughnut from "../../components/graph/Graph_doughnut";
 import Sumary_board from "../../components/board/Sumary_board";
 import Graph_profit from "../../components/graph/Graph_profit";
+import Graph_greedy from "../../components/graph/Graph_greedy";
 function id({
   coin,
   graph_data,
 }: InferGetStaticPropsType<typeof getServerSideProps>) {
-  const [supadata, setdata] = useState<null | any>({ data: null });
+  const [supadata, setdata] = useState<null | any>(null);
   const get_supabase = async () => {
     const { data, error } = await supabase
       .from<any>("Historys")
@@ -26,7 +27,10 @@ function id({
 
     console.log(supadata);
   }, []);
-
+if(supadata == null) {
+  return <div>Loading...</div>
+}
+else{
   return (
     <div>
       <Navbar coin={coin} />
@@ -43,9 +47,13 @@ function id({
         <Grid item lg={4}>
           <Graph_profit />
         </Grid>
+        <Grid item lg={4}>
+          <Graph_greedy />
+        </Grid>
       </Grid>
     </div>
   );
+}
 }
 export async function getServerSideProps() {
   const res = await fetch("https://api.bitkub.com/api/market/symbols");
