@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { Paper, Typography, Box } from "@mui/material";
 import axios from "axios";
 import { supabase } from "../login/supabaseClient";
-import { AiOutlineCaretDown } from "react-icons/ai";
+import { AiOutlineCaretDown, AiFillCaretUp } from "react-icons/ai";
 import { motion } from "framer-motion";
 function Graph_profit(data: any) {
-  const [time, set_time] = useState(new Date());
+  const [time, set_time] = useState<null | any>(new Date());
 
   const [lastest, setlastest] = useState<any>(0);
   const [supasum, setsum] = useState<any>(0);
@@ -98,6 +98,24 @@ function Graph_profit(data: any) {
           >
             {Math.round(lastest.sum - supasum)}
           </Typography>
+          <Box>
+            <motion.div
+              animate={{
+                y: [0, -10, 0],
+                transition: {
+                  duration: 2,
+                  ease: "easeInOut",
+                  times: [0, 0.2, 1],
+                  repeat: Infinity,
+                },
+              }}
+            >
+              <AiFillCaretUp
+                size={50}
+                style={{ position: "relative", left: "47%" }}
+              />
+            </motion.div>
+          </Box>
         </Paper>
       </div>
     );
