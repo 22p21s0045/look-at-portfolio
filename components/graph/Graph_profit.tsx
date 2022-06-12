@@ -5,6 +5,7 @@ import axios from "axios";
 import { supabase } from "../login/supabaseClient";
 import { AiOutlineCaretDown, AiFillCaretUp } from "react-icons/ai";
 import { motion } from "framer-motion";
+import CountUp from 'react-countup';
 function Graph_profit(data: any) {
   const [time, set_time] = useState<null | any>(new Date());
 
@@ -33,7 +34,7 @@ function Graph_profit(data: any) {
       <div>
         <Paper
           sx={{
-            backgroundColor: "#FF8C8C",
+            backgroundColor: "#FAD4D4",
             fontFamily: "Courier Prime",
             width: "100%",
           }}
@@ -50,9 +51,10 @@ function Graph_profit(data: any) {
             Profit
           </Typography>
           <Typography
-            sx={{ textAlign: "center", marginTop: 5, fontSize: "3rem" }}
+            sx={{ textAlign: "center", marginTop: 5, fontSize: "3rem",fontFamily:"Courier Prime" }}
           >
-            {Math.round(lastest.sum - supasum)}
+            
+            <CountUp end={Math.round(lastest.sum - supasum)} />
           </Typography>
           <Box>
             <motion.div
@@ -81,7 +83,7 @@ function Graph_profit(data: any) {
   } else {
     return (
       <div>
-        <Paper sx={{ backgroundColor: "#9FC088" }}>
+        <Paper sx={{ backgroundColor: "#E3FCBF" }}>
           <Typography
             sx={{
               textAlign: "center",
@@ -96,7 +98,8 @@ function Graph_profit(data: any) {
           <Typography
             sx={{ textAlign: "center", marginTop: 5, fontSize: "3rem" }}
           >
-            {Math.round(lastest.sum - supasum)}
+            
+            <CountUp end={Math.round(lastest.sum - supasum)} />
           </Typography>
           <Box>
             <motion.div
