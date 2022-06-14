@@ -11,6 +11,7 @@ import Graph_doughnut from "../../components/graph/Graph_doughnut";
 import Sumary_board from "../../components/board/Sumary_board";
 import Graph_profit from "../../components/graph/Graph_profit";
 import Graph_greedy from "../../components/graph/Graph_greedy";
+import Recap_table from "../../components/board/Recap_table";
 function id({
   coin,
   graph_data,
@@ -19,7 +20,7 @@ function id({
   const get_supabase = async () => {
     const { data, error } = await supabase
       .from<any>("Historys")
-      .select("buy,created_at,coin_pair,amount");
+      .select("buy,created_at,coin_pair,amount,history_id");
     setdata({ data: data });
   };
   useEffect(() => {
@@ -42,13 +43,16 @@ else{
           <Graph_doughnut data={graph_data} />
         </Grid>
         <Grid item xs={12} md={6} lg={4} sx={{ marginTop: "10vh" }}>
-          <Sumary_board data={graph_data} />
+          <Sumary_board data={supadata} />
         </Grid>
-        <Grid item lg={4}>
+        <Grid item lg={4} md={6} xs={12}>
           <Graph_profit />
         </Grid>
-        <Grid item lg={4}>
+        <Grid item lg={4} md={6} xs={12}>
           <Graph_greedy />
+        </Grid>
+        <Grid item lg={12} md={12} xs={12}>
+          <Recap_table data={supadata}/>
         </Grid>
       </Grid>
     </div>
