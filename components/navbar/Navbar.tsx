@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect,useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   AppBar,
   Button,
@@ -21,6 +21,8 @@ import {
   InputLabel,
   TextField,
   Stack,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import Image from "next/image";
 import { FiMenu } from "react-icons/fi";
@@ -32,9 +34,14 @@ import {
   update_buy,
   update_group,
   update_amount,
+  update_price,
+  update_userid,
+  clear_state,
 } from "../../redux/slide";
 import { RootState, AppDispatch } from "../../redux/store";
+import { supabase } from "../login/supabaseClient";
 import Drawers from "./Drawers";
+import { useRouter } from "next/router";
 interface cointype {
   id: number;
   info: string;
@@ -45,6 +52,12 @@ interface Props {
   result: Array<cointype>;
 }
 function Navbar({ coin }: any) {
+  const [users, setuser] = useState<any | null>({
+    id: "noob",
+  });
+  const dispatch = useDispatch<AppDispatch>();
+  const [snakbar_error, setsnakbar_error] = useState(false);
+  const [snakbar, setsnakbar] = useState(false);
   const [setting, setSetting] = useState(false);
   const [anchorEl, setanchorEl] = useState(null);
   const [open, setOpen] = useState(false);
@@ -52,6 +65,20 @@ function Navbar({ coin }: any) {
   const [last_price, setLastPrice] = useState(0);
   const amount = useSelector((state: RootState) => state.save.amount);
   const buy = useSelector((state: RootState) => state.save.buy);
+  useEffect(() => {
+    const user = supabase.auth.user();
+    setuser(user);
+    console.log(users);
+  }, [open]);
+  useEffect(() => {
+    dispatch(update_userid(users.id));
+  }, [buy]);
+
+  const router = useRouter();
+  const handle_logout = () => {
+    supabase.auth.signOut();
+    router.push("/");
+  };
 
   const handleOpen = () => {
     setOpen(!open);
@@ -71,8 +98,36 @@ function Navbar({ coin }: any) {
   const handle_close = () => {
     setanchorEl(null);
   };
+  const handle_snakbar = () => {
+    setsnakbar(!snakbar);
+  };
+  const handle_snakbar_error = () => {
+    setsnakbar(!snakbar);
+  };
+  const state_now = useSelector((state: RootState) => state.save);
+  const sent_history = async () => {
+    const { data, error } = await supabase.from("Historys").insert([
+      {
+        user_id: state_now.user_id,
+        coin_pair: state_now.coin_pair,
+        buy: state_now.buy,
+        amount: state_now.amount,
+        price_coin: state_now.price,
+        group_name: state_now.group,
+      },
+    ]);
+    if (error) {
+      console.log(error);
+      handleOpen();
+      handle_snakbar_error();
+    }
+    dispatch(clear_state());
+    handleOpen();
+    handle_snakbar();
+  };
+
   useEffect(() => {
-    console.log(anchorEl)
+    console.log(anchorEl);
   }, [anchorEl]);
   const el = Boolean(anchorEl);
   const coin_state = useSelector((state: RootState) => state.save.coin_pair);
@@ -84,12 +139,13 @@ function Navbar({ coin }: any) {
       });
   };
   const save_state = useSelector<RootState>((state) => state.save.coin_pair);
-  const dispatch = useDispatch<AppDispatch>();
+
   useEffect(() => {
     fetch_price();
     const price = last_price;
     const buys = buy;
     dispatch(update_amount(buys / price));
+    dispatch(update_price(price));
   }, [coin_state, last_price, buy]);
 
   return (
@@ -121,30 +177,27 @@ function Navbar({ coin }: any) {
               </Typography>
             </Box>
           </Button>
-         
-            <IconButton
-              sx={{ position: "absolute", right: "20%" }}
-              
-              onMouseOver={handle_el}
-              
+
+          <IconButton
+            sx={{ position: "absolute", right: "20%" }}
+            onMouseOver={handle_el}
+          >
+            <Avatar />
+            <Menu
+              open={el}
+              onClose={handle_close}
+              anchorEl={anchorEl}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
             >
-              <Avatar />
-              <Menu
-                open={el}
-                onClose={handle_close}
-                anchorEl={anchorEl}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-              >
-                <MenuItem>
-                  <Typography>Logout</Typography>
-                </MenuItem>
-              </Menu>
-            </IconButton>
-         
+              <MenuItem onClick={handle_logout}>
+                <Typography>Logout</Typography>
+              </MenuItem>
+            </Menu>
+          </IconButton>
 
           <Drawers />
         </Toolbar>
@@ -222,12 +275,28 @@ function Navbar({ coin }: any) {
             <Button onClick={handleOpen} color="primary">
               close
             </Button>
-            <Button onClick={() => {}} color="primary" autoFocus>
+            <Button onClick={sent_history} color="primary" autoFocus>
               Save
             </Button>
           </DialogActions>
         </Box>
       </Dialog>
+      <Snackbar
+        open={snakbar}
+        autoHideDuration={3000}
+        message="Success"
+        onClose={handle_snakbar}
+      >
+        <Alert severity="success">Save success</Alert>
+      </Snackbar>
+      <Snackbar
+        open={snakbar_error}
+        autoHideDuration={3000}
+        message="Error"
+        onClose={handle_snakbar_error}
+      >
+        <Alert severity="error">Save error</Alert>
+      </Snackbar>
     </div>
   );
 }

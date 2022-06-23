@@ -2,7 +2,9 @@ interface Savetype {
   coin_pair: string|null;
   buy: number;
   amount: number;
-  group:string|null; //nullable
+  price: number;
+  group:number|null; //nullable
+  user_id:string|null;
 }
 interface State {
     Save:{
