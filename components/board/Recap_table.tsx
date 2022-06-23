@@ -50,6 +50,7 @@ function Recap_table(data: any) {
         getRowId={(row) => row.history_id}
         pageSize={5}
         autoHeight={true}
+        sx={{fontFamily: "Mitr"}}
       />
     </div>
   );
