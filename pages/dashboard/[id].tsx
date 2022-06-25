@@ -12,6 +12,9 @@ import Sumary_board from "../../components/board/Sumary_board";
 import Graph_profit from "../../components/graph/Graph_profit";
 import Graph_greedy from "../../components/graph/Graph_greedy";
 import Recap_table from "../../components/board/Recap_table";
+import Lottie from "lottie-react";
+import loading from "../../public/lottie/loading.json";
+import { Box } from "@mui/material";
 function id({
   coin,
   graph_data,
@@ -28,36 +31,41 @@ function id({
 
     console.log(supadata);
   }, []);
-if(supadata == null) {
-  return <div>Loading...</div>
-}
-else{
-  return (
-    <div>
-      <Navbar coin={coin} />
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6} lg={6} sx={{ marginTop: "10vh" }}>
-          <Graph_routine data={graph_data} />
+  if (supadata == null) {
+    return (
+      <div>
+        <Box sx={{ top: "30%", position: "absolute", left: "40%" }}>
+          <Lottie animationData={loading} loop ={true} />
+        </Box>
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <Navbar coin={coin} />
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6} lg={6} sx={{ marginTop: "10vh" }}>
+            <Graph_routine data={graph_data} />
+          </Grid>
+          <Grid item xs={12} md={6} lg={6} sx={{ marginTop: "10vh" }}>
+            <Graph_doughnut data={graph_data} />
+          </Grid>
+          <Grid item xs={12} md={6} lg={4} sx={{ marginTop: "10vh" }}>
+            <Sumary_board data={supadata} />
+          </Grid>
+          <Grid item lg={4} md={6} xs={12}>
+            <Graph_profit />
+          </Grid>
+          <Grid item lg={4} md={6} xs={12}>
+            <Graph_greedy />
+          </Grid>
+          <Grid item lg={12} md={12} xs={12}>
+            <Recap_table data={supadata} />
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={6} lg={6} sx={{ marginTop: "10vh" }}>
-          <Graph_doughnut data={graph_data} />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4} sx={{ marginTop: "10vh" }}>
-          <Sumary_board data={supadata} />
-        </Grid>
-        <Grid item lg={4} md={6} xs={12}>
-          <Graph_profit />
-        </Grid>
-        <Grid item lg={4} md={6} xs={12}>
-          <Graph_greedy />
-        </Grid>
-        <Grid item lg={12} md={12} xs={12}>
-          <Recap_table data={supadata}/>
-        </Grid>
-      </Grid>
-    </div>
-  );
-}
+      </div>
+    );
+  }
 }
 export async function getServerSideProps() {
   const res = await fetch("https://api.bitkub.com/api/market/symbols");

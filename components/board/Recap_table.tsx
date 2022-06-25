@@ -43,7 +43,7 @@ function Recap_table(data: any) {
   console.log(row);
   return (
     <div>
-      Recap_table
+      
       <DataGrid
         columns={column}
         rows={row}
